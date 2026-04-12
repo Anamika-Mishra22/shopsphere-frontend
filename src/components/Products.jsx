@@ -33,7 +33,7 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const res = await fetch(' https://shopsphere-backend-9o3t.onrender.com/product');
+        const res = await fetch('https://shopsphere-backend-9o3t.onrender.com/product');
         if (!res.ok) {
           const text = await res.text();
           throw new Error(text || 'Failed to fetch products');
