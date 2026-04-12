@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 
-const API_BASE_URL = ' https://shopsphere-backend-9o3t.onrender.com';
+const API_BASE_URL = 'https://shopsphere-backend-9o3t.onrender.com';
 
 const Profile = () => {
   const { isDark } = useTheme();
