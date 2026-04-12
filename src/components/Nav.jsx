@@ -17,7 +17,7 @@ const Nav = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/product');
+        const res = await fetch('https://shopsphere-backend-9o3t.onrender.com/product');
         const data = await res.json();
         setProducts(data.products);
       } catch (err) {
