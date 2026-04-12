@@ -40,7 +40,6 @@ const Home = () => {
                   ? 'border-sky-500 bg-sky-600 text-white hover:bg-sky-500' 
                   : 'border-black bg-sky-500 text-white hover:bg-sky-600'
                 }
-              `}
             >
               Shop now
             </a>
@@ -50,7 +49,7 @@ const Home = () => {
         {/* Middle Column 1: Product Image */}
         <a href="/products" className={`w-64 rounded-2xl p-2 transition-colors duration-300 ${isDark ? 'bg-gray-800' : 'bg-sky-400'} transition-transform duration-500 hover:scale-105`}>
           <img 
-            src="/src/assets/product2.png" 
+            import product2 from "../assets/Product2.png";
             alt="image1" 
             className="drop-shadow-2xl rounded-full w-full h-auto object-contain"
           />
@@ -59,7 +58,7 @@ const Home = () => {
         {/* Middle Column 2: iPhone Image */}
         <a href="/products" className={`w-64 rounded-2xl p-2 transition-colors duration-300 ${isDark ? 'bg-gray-800' : 'bg-sky-400'} transition-transform duration-500 hover:scale-105`}>
           <img 
-            src="/src/assets/iphone.png" 
+            import iphone from "../assets/iphone.png";
             alt="image2" 
             width="100%" 
             className="drop-shadow-2xl rounded-[15px]"
@@ -70,7 +69,7 @@ const Home = () => {
         <div className={`w-64 text-4xl grid gap-4 rounded-2xl p-2 transition-colors duration-300 ${isDark ? 'bg-gray-800' : 'bg-sky-400'} transition-transform duration-500 hover:scale-105`}>
           <a href="/products" className="drop-shadow-2xl flex justify-center">
             <img 
-              src="/src/assets/Shop-Now.png" 
+              import shopNow from "../assets/Shop-Now.png";
               alt="shop-now" 
               height="50%" 
               width="80%"
