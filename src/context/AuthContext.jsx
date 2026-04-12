@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     // Fetch user profile data
     const fetchUser = async (authToken) => {
         try {
-            const res = await axios.get('http://localhost:5000/profile', {
+            const res = await axios.get(' https://shopsphere-backend-9o3t.onrender.com/profile', {
                 headers: {
                     Authorization: `Bearer ${authToken}`
                 }
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     // Login function
     const login = async (email, password) => {
         try {
-            const res = await axios.post('http://localhost:5000/login', {
+            const res = await axios.post(' https://shopsphere-backend-9o3t.onrender.com/login', {
                 email,
                 password
             });
