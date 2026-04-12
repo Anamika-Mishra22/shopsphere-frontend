@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://shopsphere-backend-9o3t.onrender.com';
 
 const Orders = () => {
   const { isDark } = useTheme();
