@@ -15,6 +15,7 @@ const Profile = () => {
   const [imageUploading, setImageUploading] = useState(false);
   const navigate = useNavigate();
   const { user, loading, logout, fetchUser } = useAuth();
+  // console.log(user);
   const { wishlistItems, removeFromWishlist, moveToCart } = useWishlist();
   const { addToCart, cartItems } = useCart();
   const [userOrders, setUserOrders] = useState([]);
@@ -35,7 +36,7 @@ const Profile = () => {
         }
       });
       const result = await response.json();
-      
+
       if (response.ok && result.success) {
         setUserOrders(result.data);
       } else {
@@ -62,7 +63,7 @@ const Profile = () => {
         },
         body: JSON.stringify({ imageUrl })
       });
-      
+
       const result = await response.json();
       if (response.ok && result.success) {
         // Update user in AuthContext
@@ -89,7 +90,7 @@ const Profile = () => {
       setImageUploading(true);
       const result = await uploadProfileImage(base64Image);
       setImageUploading(false);
-      
+
       if (result.success) {
         alert('Profile image updated successfully!');
       } else {
@@ -143,7 +144,7 @@ const Profile = () => {
           phoneNumber: editForm.phoneNumber
         })
       });
-      
+
       const result = await response.json();
       if (response.ok && result.success) {
         // Update user in AuthContext
@@ -249,31 +250,39 @@ const Profile = () => {
   // Calculate stats from real orders
   const totalOrders = userOrders.length;
   const totalSpent = userOrders.reduce((sum, order) => sum + order.total, 0);
-  
+
   // Get wishlist items not in cart for stats
   const wishlistItemsNotInCart = getWishlistItemsNotInCart();
-  
+
   const stats = [
-    { label: "Total Orders", value: totalOrders.toString(), icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-      </svg>
-    )},
-    { label: "Wishlist Items", value: wishlistItemsNotInCart.length.toString(), icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-      </svg>
-    )},
-    { label: "Pending Deliveries", value: userOrders.filter(o => o.status === 'Pending' || o.status === 'Processing').length.toString(), icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-      </svg>
-    )},
-    { label: "Total Spent", value: `₹${totalSpent.toLocaleString()}`, icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    )},
+    {
+      label: "Total Orders", value: totalOrders.toString(), icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+      )
+    },
+    {
+      label: "Wishlist Items", value: wishlistItemsNotInCart.length.toString(), icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      )
+    },
+    {
+      label: "Pending Deliveries", value: userOrders.filter(o => o.status === 'Pending' || o.status === 'Processing').length.toString(), icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+        </svg>
+      )
+    },
+    {
+      label: "Total Spent", value: `₹${totalSpent.toLocaleString()}`, icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    },
   ];
 
   // Format orders for display
@@ -283,7 +292,7 @@ const Profile = () => {
   };
 
   const getStatusColor = (status) => {
-    switch(status) {
+    switch (status) {
       case 'Delivered': return isDark ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-100 text-emerald-700';
       case 'Processing': return isDark ? 'bg-amber-500/20 text-amber-400' : 'bg-amber-100 text-amber-700';
       case 'Shipped': return isDark ? 'bg-sky-500/20 text-sky-400' : 'bg-sky-100 text-sky-700';
@@ -308,7 +317,7 @@ const Profile = () => {
       return (
         <div className="text-center py-12">
           <p className={isDark ? 'text-gray-400' : 'text-gray-500'}>No items in wishlist</p>
-          <button 
+          <button
             onClick={() => navigate('/products')}
             className={`mt-4 px-6 py-2 rounded-lg font-medium ${isDark ? 'bg-sky-600 text-white hover:bg-sky-500' : 'bg-sky-600 text-white hover:bg-sky-700'}`}
           >
@@ -321,13 +330,13 @@ const Profile = () => {
     return (
       <div className="space-y-4">
         {wishlistItemsNotInCart.map((item, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className={`p-4 rounded-xl flex items-center gap-4 ${isDark ? 'bg-gray-800/50 border border-gray-700' : 'bg-sky-50 border border-sky-100'}`}
           >
-            <img 
-              src={item.image} 
-              alt={item.name} 
+            <img
+              src={item.image}
+              alt={item.name}
               className="w-20 h-20 rounded-lg object-cover"
             />
             <div className="flex-1 min-w-0">
@@ -367,7 +376,7 @@ const Profile = () => {
       <div className="flex justify-between items-center mb-6">
         <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Account Settings</h3>
         {!editMode && (
-          <button 
+          <button
             onClick={() => setEditMode(true)}
             className={`text-sm font-semibold ${isDark ? 'text-sky-400 hover:text-sky-300' : 'text-sky-600 hover:text-sky-700'}`}
           >
@@ -403,11 +412,10 @@ const Profile = () => {
               name="fullName"
               value={editForm.fullName}
               onChange={handleInputChange}
-              className={`w-full px-3 py-2 rounded-lg text-sm ${
-                isDark 
-                  ? 'bg-gray-800 border border-gray-700 text-white' 
+              className={`w-full px-3 py-2 rounded-lg text-sm ${isDark
+                  ? 'bg-gray-800 border border-gray-700 text-white'
                   : 'bg-white border border-gray-300 text-gray-900'
-              }`}
+                }`}
             />
           </div>
           <div>
@@ -418,11 +426,10 @@ const Profile = () => {
               value={editForm.email}
               onChange={handleInputChange}
               disabled
-              className={`w-full px-3 py-2 rounded-lg text-sm ${
-                isDark 
-                  ? 'bg-gray-800 border border-gray-700 text-gray-500' 
+              className={`w-full px-3 py-2 rounded-lg text-sm ${isDark
+                  ? 'bg-gray-800 border border-gray-700 text-gray-500'
                   : 'bg-gray-100 border border-gray-300 text-gray-500'
-              }`}
+                }`}
             />
             <p className={`text-xs mt-1 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Email cannot be changed</p>
           </div>
@@ -433,32 +440,29 @@ const Profile = () => {
               name="phoneNumber"
               value={editForm.phoneNumber}
               onChange={handleInputChange}
-              className={`w-full px-3 py-2 rounded-lg text-sm ${
-                isDark 
-                  ? 'bg-gray-800 border border-gray-700 text-white' 
+              className={`w-full px-3 py-2 rounded-lg text-sm ${isDark
+                  ? 'bg-gray-800 border border-gray-700 text-white'
                   : 'bg-white border border-gray-300 text-gray-900'
-              }`}
+                }`}
             />
           </div>
           <div className="flex gap-2">
             <button
               type="submit"
-              className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-                isDark 
-                  ? 'bg-sky-600 hover:bg-sky-500 text-white' 
+              className={`flex-1 py-2 rounded-lg text-sm font-medium ${isDark
+                  ? 'bg-sky-600 hover:bg-sky-500 text-white'
                   : 'bg-sky-600 hover:bg-sky-700 text-white'
-              }`}
+                }`}
             >
               Save
             </button>
             <button
               type="button"
               onClick={() => setEditMode(false)}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-                isDark 
-                  ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+              className={`flex-1 py-2 rounded-lg text-sm font-medium ${isDark
+                  ? 'bg-gray-700 hover:bg-gray-600 text-white'
                   : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-              }`}
+                }`}
             >
               Cancel
             </button>
@@ -471,20 +475,20 @@ const Profile = () => {
   return (
     <main className={`min-h-screen ${isDark ? 'bg-black' : 'bg-sky-100'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
+
           {/* Left Sidebar - Profile Card */}
           <aside className="lg:col-span-3">
             <div className={`sticky top-28 rounded-2xl p-6 ${isDark ? 'bg-gray-900 border border-gray-800' : 'bg-white border border-sky-200 shadow-sm'}`}>
               <div className="flex flex-col items-center text-center">
                 <div className="relative mb-4">
-                  <img 
-                    src={userData.avatar} 
-                    alt="User Avatar" 
+                  <img
+                    src={userData.avatar}
+                    alt="User Avatar"
                     className="w-24 h-24 rounded-full object-cover border-4 border-sky-500 shadow-lg"
                   />
-                  <label 
+                  <label
                     htmlFor="profile-image-upload"
                     className={`absolute bottom-0 right-0 w-8 h-8 bg-sky-500 hover:bg-sky-600 border-2 ${isDark ? 'border-gray-900' : 'border-white'} rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                     title="Change profile picture"
@@ -544,11 +548,10 @@ const Profile = () => {
                         name="fullName"
                         value={editForm.fullName}
                         onChange={handleInputChange}
-                        className={`w-full px-3 py-2 rounded-lg text-sm ${
-                          isDark 
-                            ? 'bg-gray-800 border border-gray-700 text-white' 
+                        className={`w-full px-3 py-2 rounded-lg text-sm ${isDark
+                            ? 'bg-gray-800 border border-gray-700 text-white'
                             : 'bg-white border border-gray-300 text-gray-900'
-                        }`}
+                          }`}
                       />
                     </div>
                     <div>
@@ -559,11 +562,10 @@ const Profile = () => {
                         value={editForm.email}
                         onChange={handleInputChange}
                         disabled
-                        className={`w-full px-3 py-2 rounded-lg text-sm ${
-                          isDark 
-                            ? 'bg-gray-800 border border-gray-700 text-gray-500' 
+                        className={`w-full px-3 py-2 rounded-lg text-sm ${isDark
+                            ? 'bg-gray-800 border border-gray-700 text-gray-500'
                             : 'bg-gray-100 border border-gray-300 text-gray-500'
-                        }`}
+                          }`}
                       />
                       <p className={`text-xs mt-1 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Email cannot be changed</p>
                     </div>
@@ -574,32 +576,29 @@ const Profile = () => {
                         name="phoneNumber"
                         value={editForm.phoneNumber}
                         onChange={handleInputChange}
-                        className={`w-full px-3 py-2 rounded-lg text-sm ${
-                          isDark 
-                            ? 'bg-gray-800 border border-gray-700 text-white' 
+                        className={`w-full px-3 py-2 rounded-lg text-sm ${isDark
+                            ? 'bg-gray-800 border border-gray-700 text-white'
                             : 'bg-white border border-gray-300 text-gray-900'
-                        }`}
+                          }`}
                       />
                     </div>
                     <div className="flex gap-2">
                       <button
                         type="submit"
-                        className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-                          isDark 
-                            ? 'bg-sky-600 hover:bg-sky-500 text-white' 
+                        className={`flex-1 py-2 rounded-lg text-sm font-medium ${isDark
+                            ? 'bg-sky-600 hover:bg-sky-500 text-white'
                             : 'bg-sky-600 hover:bg-sky-700 text-white'
-                        }`}
+                          }`}
                       >
                         Save
                       </button>
                       <button
                         type="button"
                         onClick={() => setEditMode(false)}
-                        className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-                          isDark 
-                            ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                        className={`flex-1 py-2 rounded-lg text-sm font-medium ${isDark
+                            ? 'bg-gray-700 hover:bg-gray-600 text-white'
                             : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-                        }`}
+                          }`}
                       >
                         Cancel
                       </button>
@@ -619,11 +618,10 @@ const Profile = () => {
                   <button
                     key={item.id}
                     onClick={() => handleTabClick(item.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                      activeTab === item.id
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === item.id
                         ? isDark ? 'bg-sky-600 text-white' : 'bg-sky-600 text-white'
                         : isDark ? 'text-gray-400 hover:bg-gray-800 hover:text-white' : 'text-gray-600 hover:bg-sky-50 hover:text-gray-900'
-                    }`}
+                      }`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
@@ -647,12 +645,12 @@ const Profile = () => {
 
           {/* Main Content Area */}
           <section className="lg:col-span-9 space-y-8">
-            
+
             {/* Welcome Banner */}
             <div className={`rounded-2xl p-6 sm:p-8 ${isDark ? 'bg-gradient-to-r from-sky-900/40 to-gray-900 border border-gray-800' : 'bg-gradient-to-r from-sky-600 to-sky-500'}`}>
-              <h1 className={`text-2xl sm:text-3xl font-black ${isDark ? 'text-white' : 'text-white'}`}>
-                Welcome back, {userData.name.split(' ')[0]}!
-              </h1>
+             <h1 className={`text-2xl sm:text-3xl font-black ${isDark ? 'text-white' : 'text-white'}`}>
+  Welcome back, {user?.fullName || 'User'}!
+</h1>
               <p className={`mt-2 ${isDark ? 'text-gray-300' : 'text-sky-100'}`}>
                 Here's what's happening with your account today.
               </p>
@@ -678,7 +676,7 @@ const Profile = () => {
                 <div className={`rounded-2xl p-6 ${isDark ? 'bg-gray-900 border border-gray-800' : 'bg-white border border-sky-200 shadow-sm'}`}>
                   <div className="flex justify-between items-center mb-6">
                     <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Recent Orders</h3>
-                    <button 
+                    <button
                       onClick={() => setActiveTab('orders')}
                       className={`text-sm font-semibold ${isDark ? 'text-sky-400 hover:text-sky-300' : 'text-sky-600 hover:text-sky-700'}`}
                     >

@@ -1,95 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
-  const { cartItems, getCartCount } = useCart();
-  const { user, isAuthenticated, logout } = useAuth();
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch('https://shopsphere-backend-9o3t.onrender.com/product');
-        const data = await res.json();
-        setProducts(data.products);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const handleSearch = () => {
-    const keyword = search.toLowerCase().trim();
-
-    if (!keyword) return;
-
-    // Check category match
-    const categoryMatch = products.some(p =>
-      p.productCategory.toLowerCase().includes(keyword)
-    );
-
-    if (categoryMatch) {
-      navigate(`/products?category=${keyword}`);
-    } else {
-      navigate(`/products`);
-    }
-  };
-
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
   // Updated classes for Sky Blue theme
-  const bgClass = isDark
-    ? 'bg-black/80 border-gray-800/60'
-    : 'bg-sky-50/90 border-sky-200/60';
-
+  const bgClass = isDark 
+    ? 'bg-black/80 border-gray-800/60' 
+    : 'bg-sky-50/90 border-sky-200/60'; 
+  
   const textClass = isDark ? 'text-gray-300' : 'text-gray-700';
   const textHoverClass = isDark ? 'hover:text-white' : 'hover:text-sky-800';
   const logoClass = isDark ? 'text-white' : 'text-sky-900';
 
-  // Get user's first letter for avatar
-  const getUserInitial = () => {
-    if (user?.fullName) {
-      return user.fullName.charAt(0).toUpperCase();
-    }
-    if (user?.email) {
-      return user.email.charAt(0).toUpperCase();
-    }
-    return 'U';
-  };
-
   return (
     <header className="w-full sticky top-0 z-50 overflow-x-hidden">
       {/* Top slim row */}
-      <nav className={`h-10 ${bgClass} backdrop-blur-md border-b flex items-center justify-between px-3 sm:px-5 md:px-6 text-sm`}>
+      <nav className={`h-10 ${bgClass} backdrop-blur-md border-b flex items-center justify-between px-3 sm:px-5 md:px-6 text-sm overflow-x-hidden`}>
         <h1 className={`${logoClass} font-bold tracking-tight text-base sm:text-lg flex-shrink-0`}>
           ShopEasy
         </h1>
@@ -115,39 +45,20 @@ const Nav = () => {
           <Link to="/help" className={`${textClass} ${textHoverClass} transition text-xs sm:text-sm`}>
             Help
           </Link>
-
-          {isAuthenticated ? (
-            <div className="relative" ref={dropdownRef}>
-              <button
-                className={`flex items-center gap-2 ${textClass} ${textHoverClass} transition text-xs sm:text-sm`}
-                onClick={() => setIsOpen(!isOpen)}
-
-              > <a href="/profile" className='flex gap-2'>
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-sky-600 text-white' : 'bg-sky-600 text-white'}`}>
-                 {getUserInitial()}
-                </div>
-                <span className="hidden sm:inline">{user?.fullName?.split(' ')[0] || user?.email?.split('@')[0]}</span></a>
-                              </button>
-            
-            </div>
-          ) : (
-            <>
-              <Link to="/login" className={`${textClass} ${textHoverClass} transition text-xs sm:text-sm`}>
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className={`px-2 py-0.5 sm:px-3 sm:py-1 ${isDark ? 'bg-gray-700/70 hover:bg-gray-600/90 text-gray-200' : 'bg-sky-600 hover:bg-sky-700 text-white'} rounded text-xs sm:text-sm font-medium transition whitespace-nowrap`}
-              >
-                Sign Up
-              </Link>
-            </>
-          )}
+          <Link to="/login" className={`${textClass} ${textHoverClass} transition text-xs sm:text-sm`}>
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className={`px-2 py-0.5 sm:px-3 sm:py-1 ${isDark ? 'bg-gray-700/70 hover:bg-gray-600/90 text-gray-200' : 'bg-sky-600 hover:bg-sky-700 text-white'} rounded text-xs sm:text-sm font-medium transition whitespace-nowrap`}
+          >
+            Sign Up
+          </Link>
         </div>
       </nav>
 
       {/* Main nav row */}
-      <nav className={`h-16 ${bgClass} backdrop-blur-md border-b flex items-center px-3 sm:px-5 md:px-6 gap-3 sm:gap-4`}>
+      <nav className={`h-16 ${bgClass} backdrop-blur-md border-b flex items-center px-3 sm:px-5 md:px-6 gap-3 sm:gap-4 overflow-x-hidden`}>
         <div className="flex-shrink-0">
           <Link to="/" className={`${logoClass} font-extrabold text-xl sm:text-2xl tracking-tight`}>
             ShopEasy
@@ -160,19 +71,9 @@ const Nav = () => {
               <input
                 type="text"
                 placeholder="Search..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSearch();
-                }}
-                className={`flex-1 min-0 bg-transparent ${
-                  isDark ? 'text-gray-200 placeholder-gray-500' : 'text-gray-800 placeholder-gray-500'
-                } px-3 py-2 text-sm outline-none`}
+                className={`flex-1 min-0 bg-transparent ${isDark ? 'text-gray-200 placeholder-gray-500' : 'text-gray-800 placeholder-gray-500'} px-3 py-2 text-sm outline-none focus:border-sky-500 transition overflow-hidden`}
               />
-              <button
-                onClick={handleSearch}
-                className={`${isDark ? 'bg-gray-800 hover:bg-gray-700 text-gray-200' : 'bg-sky-600 hover:bg-sky-700 text-white'} px-3 sm:px-5 text-sm font-medium transition whitespace-nowrap`}
-              >
+              <button className={`${isDark ? 'bg-gray-800 hover:bg-gray-700 text-gray-200' : 'bg-sky-600 hover:bg-sky-700 text-white'} px-3 sm:px-5 text-sm font-medium transition whitespace-nowrap`}>
                 Search
               </button>
             </div>
@@ -184,16 +85,10 @@ const Nav = () => {
           <Link to="/products" className={`${textClass} ${textHoverClass} transition`}>Products</Link>
           <Link to="/cart" className={`${textClass} ${textHoverClass} transition relative`}>
             Cart
-            <span className="absolute -top-2 -right-4 bg-sky-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              {getCartCount()}
-            </span>
+            <span className="absolute -top-2 -right-4 bg-sky-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
           </Link>
-          {isAuthenticated && (
-            <Link to="/orders" className={`${textClass} ${textHoverClass} transition`}>Orders</Link>
-          )}
-          {isAuthenticated && (
-            <Link to="/profile" className={`${textClass} ${textHoverClass} transition`}>Profile</Link>
-          )}
+          <Link to="/orders" className={`${textClass} ${textHoverClass} transition`}>Orders</Link>
+          <Link to="/profile" className={`${textClass} ${textHoverClass} transition`}>Profile</Link>
         </div>
 
         <div className="md:hidden flex-shrink-0">
@@ -220,17 +115,8 @@ const Nav = () => {
               <Link to="/" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Home</Link>
               <Link to="/products" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Products</Link>
               <Link to="/cart" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Cart</Link>
-              {isAuthenticated ? (
-                <>
-                  <Link to="/orders" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Orders</Link>
-                  <Link to="/profile" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Profile</Link>
-                  <button onClick={handleLogout} className={`${isDark ? 'text-red-400 hover:text-white' : 'text-red-600 hover:text-red-800'} transition text-left`}>
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <Link to="/login" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Login</Link>
-              )}
+              <Link to="/orders" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Orders</Link>
+              <Link to="/profile" onClick={toggleMenu} className={`${isDark ? 'text-gray-200 hover:text-white' : 'text-gray-700 hover:text-sky-800'} transition`}>Profile</Link>
             </div>
           </div>
         </div>

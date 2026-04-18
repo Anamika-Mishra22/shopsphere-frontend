@@ -46,6 +46,7 @@ function App() {
                 <Route path='/terms' element={<><Terms/></>}/>
                 <Route path='/wishlist' element={<><Nav /><Wishlist /><Footer /></>} />
               </Routes>
+              
               {/* <LoginPrompt /> */}
             </div>
           </WishlistProvider>
