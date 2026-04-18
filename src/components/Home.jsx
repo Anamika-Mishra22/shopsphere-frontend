@@ -3,9 +3,9 @@ import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 // images safe import
-import product2 from "../assets/product2.png";
+import Product2 from "../assets/Product2.png";
 import iphone from "../assets/iphone.png";
-import shopNow from "../assets/Shop-Now.png";
+import ShopNow from "../assets/Shop-Now.png";
 
 const Home = () => {
   const { isDark } = useTheme();
@@ -63,7 +63,7 @@ const Home = () => {
           {/* IMAGE 1 */}
           <div onClick={goToProducts}
             className={`w-64 rounded-2xl p-2 cursor-pointer hover:scale-105 transition ${isDark ? 'bg-gray-800' : 'bg-sky-400'}`}>
-            <img src={product2} alt="img1" className="w-full object-contain" />
+            <img src={Product2} alt="img1" className="w-full object-contain" />
           </div>
 
           {/* IMAGE 2 */}
@@ -75,7 +75,7 @@ const Home = () => {
           {/* IMAGE 3 */}
           <div onClick={goToProducts}
             className={`w-64 grid gap-4 rounded-2xl p-2 cursor-pointer hover:scale-105 transition ${isDark ? 'bg-gray-800' : 'bg-sky-400'}`}>
-            <img src={shopNow} alt="img3" className="w-full object-contain" />
+            <img src={ShopNow} alt="img3" className="w-full object-contain" />
             <b className={`text-center p-2 rounded ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-sky-700'}`}>
               BUY NOW
             </b>
