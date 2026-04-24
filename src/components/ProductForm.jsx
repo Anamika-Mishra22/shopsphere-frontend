@@ -41,7 +41,7 @@ const handleSubmit = async (e) => {
         formPayload.append('productImage', formData.productImage);
       }
 
-      const response = await fetch('http://localhost:5000/product', {
+      const response = await fetch('https://shopsphere-backend-9o3t.onrender.com/product', {
         method: 'POST',
         body: formPayload,
       });

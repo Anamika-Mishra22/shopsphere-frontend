@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://shopsphere-backend-9o3t.onrender.com';
 
 const AdminOrders = () => {
   const { isDark } = useTheme();
